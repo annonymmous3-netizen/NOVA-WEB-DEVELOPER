@@ -15,11 +15,42 @@
     <div class="h1">Master Control Center</div>
     <div class="muted">NOVA WEB DEVELOPER — تمام licensed websites کا مرکزی کنٹرول</div>
     <div style="height:18px"></div>
-    <div class="field"><label>Master Email</label><input id="email" type="email" autocomplete="username"></div>
+    <div class="field"><label>Master Email</label><input id="email" type="email" autocomplete="username" value="annonymmous3@gmail.com"></div>
     <div style="height:10px"></div>
-    <div class="field"><label>Master Password</label><input id="password" type="password" autocomplete="current-password"></div>
-    <div style="height:14px"></div><button class="btn btn-primary" style="width:100%" onclick="login()">Master Login</button>
+    <div class="field"><label>Master Password</label><input id="password" type="password" autocomplete="current-password" placeholder="اپنا Master Password درج کریں"></div>
+    <div style="height:14px"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="login()">Master Login</button>
+    <button class="btn" style="width:100%;margin-top:9px;background:#eef5ff;color:var(--navy)" onclick="openRecovery()">Master Key سے Password Reset</button>
     <div id="loginMsg" class="notice hidden"></div>
+    <div class="muted" style="margin-top:12px">پہلی بار: Password <b>123456</b> استعمال کریں۔ کامیاب login کے بعد آپ سے اپنا نیا password بنانے کو کہا جائے گا۔</div>
+  </div>
+</div>
+
+<div id="setupModal" class="modal hidden">
+  <div class="card">
+    <div class="h1" style="font-size:19px">اپنا نیا Master Password بنائیں</div>
+    <div class="muted">یہ صرف پہلی کامیاب login کے بعد ایک بار کرنا ہوگا۔ اس کے بعد ہمیشہ آپ کا اپنا password استعمال ہوگا۔</div>
+    <div style="height:14px"></div>
+    <div class="field"><label>نیا Password</label><input id="newPassword" type="password" autocomplete="new-password" placeholder="کم از کم 8 حروف"></div>
+    <div style="height:10px"></div>
+    <div class="field"><label>Password دوبارہ لکھیں</label><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="Confirm Password"></div>
+    <div id="setupMsg" class="notice hidden"></div>
+    <div class="right" style="margin-top:14px"><button class="btn btn-primary" onclick="saveNewMasterPassword()">Password Save کریں</button></div>
+  </div>
+</div>
+
+<div id="recoveryModal" class="modal hidden">
+  <div class="card">
+    <div class="h1" style="font-size:19px">Master Password Reset</div>
+    <div class="muted">اپنی Master Key درج کریں، پھر نیا password دو بار لکھیں۔</div>
+    <div style="height:14px"></div>
+    <div class="field"><label>Master Key</label><input id="masterKey" type="password" autocomplete="off" placeholder="Master Key"></div>
+    <div style="height:10px"></div>
+    <div class="field"><label>نیا Password</label><input id="resetPassword" type="password" autocomplete="new-password" placeholder="کم از کم 8 حروف"></div>
+    <div style="height:10px"></div>
+    <div class="field"><label>Password دوبارہ لکھیں</label><input id="resetConfirmPassword" type="password" autocomplete="new-password" placeholder="Confirm Password"></div>
+    <div id="recoveryMsg" class="notice hidden"></div>
+    <div class="right" style="margin-top:14px"><button class="btn" onclick="closeRecovery()">Cancel</button> <button class="btn btn-primary" onclick="resetMasterPassword()">Password Reset کریں</button></div>
   </div>
 </div>
 <div id="app" class="hidden">
@@ -52,10 +83,112 @@
 <script>
 const SUPABASE_URL='https://ixmiwgolmklrqenwflub.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_30FTYbUsJSxENE6zXFXatw_ySKKcWzB';
+const MASTER_EMAIL='annonymmous3@gmail.com';
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); let lastCode='';
-function msg(id,t){const e=document.getElementById(id);e.textContent=t;e.classList.remove('hidden')}
-async function login(){const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;const {error}=await db.auth.signInWithPassword({email,password});if(error)return msg('loginMsg',error.message);await boot()}
-async function boot(){const {data:{session}}=await db.auth.getSession();if(!session){document.getElementById('loginView').classList.remove('hidden');document.getElementById('app').classList.add('hidden');return}const {data:ok}=await db.rpc('is_master_admin');if(ok!==true){await db.auth.signOut();return msg('loginMsg','یہ اکاؤنٹ Master Admin میں رجسٹرڈ نہیں ہے۔');}document.getElementById('loginView').classList.add('hidden');document.getElementById('app').classList.remove('hidden');loadSites()}
+
+function msg(id,t){
+  const e=document.getElementById(id);
+  if(!e)return;
+  e.textContent=t;
+  e.classList.remove('hidden');
+}
+
+function validPassword(p){ return typeof p==='string' && p.length>=8; }
+
+async function login(){
+  const email=(document.getElementById('email').value.trim()||MASTER_EMAIL).toLowerCase();
+  const password=document.getElementById('password').value;
+  if(email!==MASTER_EMAIL)return msg('loginMsg','صرف NOVA WEB DEVELOPER کا Master Email استعمال کریں۔');
+  if(!password)return msg('loginMsg','Master Password درج کریں۔');
+  const {error}=await db.auth.signInWithPassword({email,password});
+  if(error)return msg('loginMsg',error.message);
+  await boot();
+}
+
+async function boot(){
+  const {data:{session}}=await db.auth.getSession();
+  if(!session){
+    document.getElementById('loginView').classList.remove('hidden');
+    document.getElementById('app').classList.add('hidden');
+    return;
+  }
+
+  const {data:ok,error:adminError}=await db.rpc('is_master_admin');
+  if(adminError || ok!==true){
+    await db.auth.signOut();
+    return msg('loginMsg','یہ email Master Admin میں رجسٹرڈ نہیں ہے۔');
+  }
+
+  const user=session.user;
+  const initialized=user?.user_metadata?.master_password_initialized===true;
+
+  if(!initialized){
+    document.getElementById('loginView').classList.add('hidden');
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('setupModal').classList.remove('hidden');
+    return;
+  }
+
+  document.getElementById('loginView').classList.add('hidden');
+  document.getElementById('setupModal').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  loadSites();
+}
+
+async function saveNewMasterPassword(){
+  const p=document.getElementById('newPassword').value;
+  const c=document.getElementById('confirmPassword').value;
+  if(!validPassword(p))return msg('setupMsg','نیا password کم از کم 8 حروف کا ہونا چاہیے۔');
+  if(p!==c)return msg('setupMsg','دونوں passwords ایک جیسے نہیں ہیں۔');
+
+  const {data,error}=await db.auth.updateUser({
+    password:p,
+    data:{master_password_initialized:true}
+  });
+  if(error)return msg('setupMsg',error.message);
+
+  document.getElementById('setupModal').classList.add('hidden');
+  document.getElementById('newPassword').value='';
+  document.getElementById('confirmPassword').value='';
+  document.getElementById('app').classList.remove('hidden');
+  loadSites();
+  alert('✅ نیا Master Password محفوظ ہو گیا۔ اب login کے لیے یہی password استعمال ہوگا۔');
+}
+
+function openRecovery(){
+  document.getElementById('recoveryModal').classList.remove('hidden');
+  document.getElementById('recoveryMsg').classList.add('hidden');
+  document.getElementById('masterKey').value='';
+  document.getElementById('resetPassword').value='';
+  document.getElementById('resetConfirmPassword').value='';
+}
+
+function closeRecovery(){
+  document.getElementById('recoveryModal').classList.add('hidden');
+}
+
+async function resetMasterPassword(){
+  const key=document.getElementById('masterKey').value.trim();
+  const p=document.getElementById('resetPassword').value;
+  const c=document.getElementById('resetConfirmPassword').value;
+  if(!key)return msg('recoveryMsg','Master Key درج کریں۔');
+  if(!validPassword(p))return msg('recoveryMsg','نیا password کم از کم 8 حروف کا ہونا چاہیے۔');
+  if(p!==c)return msg('recoveryMsg','دونوں passwords ایک جیسے نہیں ہیں۔');
+
+  const {data,error}=await db.rpc('reset_master_password_with_key',{
+    p_email:MASTER_EMAIL,
+    p_master_key:key,
+    p_new_password:p
+  });
+  if(error)return msg('recoveryMsg',error.message);
+  const row=Array.isArray(data)?data[0]:data;
+  if(!row?.success)return msg('recoveryMsg',row?.message||'Master Key درست نہیں ہے۔');
+
+  closeRecovery();
+  document.getElementById('password').value='';
+  alert('✅ Password reset ہو گیا۔ اب login میں اپنا نیا password استعمال کریں۔');
+}
+
 async function logout(){await db.auth.signOut();location.reload()}
 function cleanUrl(v){return v.trim().replace(/\/$/,'')}
 async function registerSite(){const url=cleanUrl(document.getElementById('siteUrl').value),name=document.getElementById('siteName').value.trim();if(!/^https?:\/\//i.test(url))return msg('siteMsg','درست URL درج کریں، مثلاً https://example.vercel.app');const {error}=await db.rpc('register_site',{p_site_url:url,p_site_name:name});if(error)return msg('siteMsg',error.message);msg('siteMsg','ویب سائٹ کامیابی سے رجسٹر ہو گئی۔');loadSites()}
