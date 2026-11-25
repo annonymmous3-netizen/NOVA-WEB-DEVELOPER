@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MR FOOD CAFE NAVEED — Master License Control</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#0b1f3a;--navy2:#12345b;--white:#fff;--bg:#f4f7fb;--line:#d9e2ee;--green:#12805c;--red:#c0392b;--gold:#d89b18;--text:#1d2939;--muted:#667085;--shadow:0 12px 32px rgba(11,31,58,.10)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}.hidden{display:none!important}.top{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{font-weight:800;font-size:19px}.brand small{display:block;font-size:11px;opacity:.75;margin-top:4px}.btn{border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer}.btn-primary{background:var(--navy);color:#fff}.btn-light{background:#fff;color:var(--navy)}.btn-danger{background:var(--red);color:#fff}.wrap{max-width:1180px;margin:24px auto;padding:0 16px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:20px;margin-bottom:18px}.login{max-width:440px;margin:70px auto}.h1{font-size:24px;font-weight:800;color:var(--navy);margin:0 0 7px}.muted{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}.stat b{font-size:26px;color:var(--navy);display:block;margin-top:5px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.field{flex:1;min-width:210px}.field label{font-size:12px;font-weight:700;display:block;margin-bottom:6px}.field input{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.table th{background:#f8fafc;color:var(--navy)}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}.active{background:#dff5eb;color:var(--green)}.expired{background:#fde7e5;color:var(--red)}.inactive{background:#fff1cf;color:#8a6500}.warning{background:#fff7df;border-left:4px solid var(--gold);padding:12px;border-radius:8px;font-size:13px}.codebox{font-family:monospace;font-size:24px;letter-spacing:2px;background:#f8fafc;border:1px dashed var(--navy2);padding:16px;text-align:center;border-radius:10px;margin:12px 0}.notice{padding:10px;border-radius:8px;background:#eef5ff;color:var(--navy);font-size:13px;margin-top:10px}.live-master{font-size:11px;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:7px}.live-master span{width:8px;height:8px;background:#35d07f;border-radius:50%;box-shadow:0 0 0 4px rgba(53,208,127,.15)}.toast{position:fixed;right:18px;top:18px;z-index:5000;background:#fff;border:1px solid #bfe4d2;border-left:5px solid #12a866;border-radius:12px;box-shadow:0 14px 35px rgba(0,0,0,.16);padding:14px 16px;max-width:360px}.toast strong{display:block;color:#073a68;margin-bottom:4px}.pending{background:#fff4d6;color:#8a6500}.right{text-align:right}.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px}.modal .card{width:min(520px,100%)}@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.top{padding:14px 16px}}@media(max-width:520px){.grid{grid-template-columns:1fr}.wrap{margin-top:14px}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="loginView" class="wrap">
+  <div class="card login">
+    <div class="h1">Master Control Center</div>
+    <div class="muted">NOVA WEB DEVELOPER — تمام licensed websites کا مرکزی کنٹرول</div>
+    <div style="height:18px"></div>
+    <div class="field"><label>Master Email</label><input id="email" type="email" autocomplete="username"></div>
+    <div style="height:10px"></div>
+    <div class="field"><label>Master Password</label><input id="password" type="password" autocomplete="current-password"></div>
+    <div style="height:14px"></div><button class="btn btn-primary" style="width:100%" onclick="login()">Master Login</button>
+    <div id="loginMsg" class="notice hidden"></div>
+  </div>
+</div>
+<div id="app" class="hidden">
+  <div class="top"><div class="brand">NOVA WEB DEVELOPER <small>MASTER LICENSE CONTROL CENTER</small></div><div class="live-master"><span></span> LIVE LICENSE MONITOR</div><button class="btn btn-light" onclick="logout()">Logout</button></div>
+  <div class="wrap">
+    <div class="grid">
+      <div class="stat"><span class="muted">Registered Websites</span><b id="statSites">0</b></div>
+      <div class="stat"><span class="muted">Active</span><b id="statActive">0</b></div>
+      <div class="stat"><span class="muted">Expiring Soon</span><b id="statSoon">0</b></div>
+      <div class="stat"><span class="muted">Expired</span><b id="statExpired">0</b></div><div class="stat"><span class="muted">Renewal Pending</span><b id="statPending">0</b></div>
+    </div>
+    <div class="card">
+      <div class="h1" style="font-size:19px">نئی ویب سائٹ رجسٹر کریں</div>
+      <div class="muted" style="margin-bottom:14px">صرف URL درج کریں، پھر اسی ویب سائٹ کے لیے ماہانہ activation code بنائیں۔</div>
+      <div class="toolbar">
+        <div class="field"><label>Website URL</label><input id="siteUrl" placeholder="https://example.vercel.app/" /></div>
+        <div class="field"><label>Website / Cafe Name</label><input id="siteName" placeholder="Cafe / Restaurant Name" /></div>
+        <button class="btn btn-primary" onclick="registerSite()">Register Website</button>
+      </div>
+      <div id="siteMsg" class="notice hidden"></div>
+    </div>
+    <div class="card">
+      <div class="h1" style="font-size:19px">Licensed Websites</div>
+      <div class="tablewrap"><table class="table"><thead><tr><th>Website</th><th>Name</th><th>Status</th><th>Expiry</th><th>Days</th><th>Renewal</th><th>Action</th></tr></thead><tbody id="sitesBody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+<div id="masterToast" class="toast hidden"><strong id="toastTitle">License Update</strong><div id="toastText"></div></div>
+<div id="codeModal" class="modal hidden"><div class="card"><div class="h1" style="font-size:19px">Activation Code تیار ہے</div><div class="muted">یہ code صرف منتخب ویب سائٹ کے لیے ہے اور ایک بار استعمال ہوگا۔</div><div id="generatedCode" class="codebox"></div><div id="generatedInfo" class="notice"></div><div class="right" style="margin-top:14px"><button class="btn btn-primary" onclick="copyCode()">Code Copy کریں</button> <button class="btn" onclick="closeModal()">Close</button></div></div></div>
+<script>
+const SUPABASE_URL='https://mavjzmuathawcvuxaguo.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hdmp6bXVhdGhhd2N2dXhhZ3VvIiwidHlwZSI6ImFub24iLCJpYXQiOjE3OTM3MjU4NDAsImV4cCI6MjEwOTMwMTg0MH0.M4qy0QgGgv04mP4SW-NwRNwdY5BrGV04hUDpUmg6uj0';
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); let lastCode='';
+function msg(id,t){const e=document.getElementById(id);e.textContent=t;e.classList.remove('hidden')}
+async function login(){const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;const {error}=await db.auth.signInWithPassword({email,password});if(error)return msg('loginMsg',error.message);await boot()}
+async function boot(){const {data:{session}}=await db.auth.getSession();if(!session){document.getElementById('loginView').classList.remove('hidden');document.getElementById('app').classList.add('hidden');return}const {data:ok}=await db.rpc('is_master_admin');if(ok!==true){await db.auth.signOut();return msg('loginMsg','یہ اکاؤنٹ Master Admin میں رجسٹرڈ نہیں ہے۔');}document.getElementById('loginView').classList.add('hidden');document.getElementById('app').classList.remove('hidden');loadSites()}
+async function logout(){await db.auth.signOut();location.reload()}
+function cleanUrl(v){return v.trim().replace(/\/$/,'')}
+async function registerSite(){const url=cleanUrl(document.getElementById('siteUrl').value),name=document.getElementById('siteName').value.trim();if(!/^https?:\/\//i.test(url))return msg('siteMsg','درست URL درج کریں، مثلاً https://example.vercel.app');const {error}=await db.rpc('register_site',{p_site_url:url,p_site_name:name});if(error)return msg('siteMsg',error.message);msg('siteMsg','ویب سائٹ کامیابی سے رجسٹر ہو گئی۔');loadSites()}
+function statusBadge(s){return s==='ACTIVE'?'<span class="badge active">ACTIVE</span>':s==='EXPIRED'?'<span class="badge expired">EXPIRED</span>':'<span class="badge inactive">INACTIVE</span>'}
+async function loadSites(){const {data,error}=await db.from('site_licenses').select('*').order('created_at',{ascending:false});if(error)return msg('siteMsg',error.message);const {data:codes}=await db.from('activation_codes').select('site_url,status,created_at').eq('status','UNUSED');const pendingCodes=new Set((codes||[]).map(c=>cleanUrl(c.site_url).toLowerCase()));let active=0,soon=0,expired=0,pending=0;const now=new Date();data.forEach(x=>{const d=x.active_until?Math.ceil((new Date(x.active_until+'T23:59:59')-now)/86400000):0;if(d>=0)active++;if(d>=0&&d<=5)soon++;if(d<0)expired++;if((d<0||d<=5)&&pendingCodes.has(cleanUrl(x.site_url).toLowerCase()))pending++});document.getElementById('statSites').textContent=data.length;document.getElementById('statActive').textContent=active;document.getElementById('statSoon').textContent=soon;document.getElementById('statExpired').textContent=expired;document.getElementById('statPending').textContent=pending;document.getElementById('sitesBody').innerHTML=data.map(x=>{const d=x.active_until?Math.max(0,Math.ceil((new Date(x.active_until+'T23:59:59')-now)/86400000)):0;const s=x.active_until&&new Date(x.active_until+'T23:59:59')>=now?'ACTIVE':x.active_until?'EXPIRED':'INACTIVE';const pendingCode=pendingCodes.has(cleanUrl(x.site_url).toLowerCase());const renewal=(s==='EXPIRED'||d<=5)?(pendingCode?'<span class="badge pending">CODE GENERATED</span>':'<span class="badge expired">AWAITING RENEWAL</span>'):'<span class="badge active">OK</span>';return `<tr><td>${escapeHtml(x.site_url)}</td><td>${escapeHtml(x.site_name)}</td><td>${statusBadge(s)}</td><td>${x.active_until||'—'}</td><td>${s==='EXPIRED'?0:d}</td><td>${renewal}</td><td><button class="btn btn-primary" onclick="generateCode('${encodeURIComponent(x.site_url)}')">Generate Monthly Code</button></td></tr>`}).join('')||'<tr><td colspan="7">ابھی کوئی ویب سائٹ رجسٹرڈ نہیں۔</td></tr>'}
+function escapeHtml(s){return String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function randomCode(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let out='NOVA-';for(let i=0;i<12;i++){if(i===4||i===8)out+='-';out+=a[Math.floor(Math.random()*a.length)]}return out}
+async function sha256(text){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')}
+async function generateCode(encoded){const url=decodeURIComponent(encoded),code=randomCode(),hash=await sha256(code.toUpperCase());const {error}=await db.rpc('store_activation_code',{p_site_url:url,p_code_hash:hash,p_code_last4:code.slice(-4)});if(error)return alert(error.message);lastCode=code;document.getElementById('generatedCode').textContent=code;document.getElementById('generatedInfo').textContent='یہ code اس URL کے لیے ہے: '+url+' — activation کے بعد اگلے calendar month کے آخری دن تک فعال رہے گا۔';document.getElementById('codeModal').classList.remove('hidden')}
+function copyCode(){navigator.clipboard?.writeText(lastCode);alert('Activation code copy ہو گیا۔')}
+function closeModal(){document.getElementById('codeModal').classList.add('hidden')}
+function showToast(title,text){const t=document.getElementById('masterToast');document.getElementById('toastTitle').textContent=title;document.getElementById('toastText').textContent=text;t.classList.remove('hidden');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>t.classList.add('hidden'),10000)}
+function subscribeMasterRealtime(){try{db.channel('nova-license-live').on('postgres_changes',{event:'*',schema:'public',table:'site_licenses'},payload=>{loadSites();if(payload.eventType==='UPDATE' && payload.new && payload.new.active_until){showToast('Website Activated / Renewed',`${payload.new.site_name || payload.new.site_url} is now active until ${payload.new.active_until}.`);}}).subscribe();}catch(e){}}
+setInterval(()=>{if(document.getElementById('app') && !document.getElementById('app').classList.contains('hidden')) loadSites()},5000);
+async function bootAndLive(){await boot();if(!document.getElementById('app').classList.contains('hidden'))subscribeMasterRealtime()}
+bootAndLive();
+</script>
+</body></html>
