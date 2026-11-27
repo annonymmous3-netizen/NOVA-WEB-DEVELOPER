@@ -3,207 +3,113 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NOVA WEB DEVELOPER — Master License Control</title>
+<meta name="theme-color" content="#081a35">
+<title>NOVA WEB DEVELOPER — Master Control</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--navy:#0b1f3a;--navy2:#12345b;--white:#fff;--bg:#f4f7fb;--line:#d9e2ee;--green:#12805c;--red:#c0392b;--gold:#d89b18;--text:#1d2939;--muted:#667085;--shadow:0 12px 32px rgba(11,31,58,.10)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}.hidden{display:none!important}.top{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{font-weight:800;font-size:19px}.brand small{display:block;font-size:11px;opacity:.75;margin-top:4px}.btn{border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer}.btn-primary{background:var(--navy);color:#fff}.btn-light{background:#fff;color:var(--navy)}.btn-danger{background:var(--red);color:#fff}.wrap{max-width:1180px;margin:24px auto;padding:0 16px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:20px;margin-bottom:18px}.login{max-width:440px;margin:70px auto}.h1{font-size:24px;font-weight:800;color:var(--navy);margin:0 0 7px}.muted{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}.stat b{font-size:26px;color:var(--navy);display:block;margin-top:5px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.field{flex:1;min-width:210px}.field label{font-size:12px;font-weight:700;display:block;margin-bottom:6px}.field input{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.table th{background:#f8fafc;color:var(--navy)}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}.active{background:#dff5eb;color:var(--green)}.expired{background:#fde7e5;color:var(--red)}.inactive{background:#fff1cf;color:#8a6500}.warning{background:#fff7df;border-left:4px solid var(--gold);padding:12px;border-radius:8px;font-size:13px}.codebox{font-family:monospace;font-size:24px;letter-spacing:2px;background:#f8fafc;border:1px dashed var(--navy2);padding:16px;text-align:center;border-radius:10px;margin:12px 0}.notice{padding:10px;border-radius:8px;background:#eef5ff;color:var(--navy);font-size:13px;margin-top:10px}.live-master{font-size:11px;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:7px}.live-master span{width:8px;height:8px;background:#35d07f;border-radius:50%;box-shadow:0 0 0 4px rgba(53,208,127,.15)}.toast{position:fixed;right:18px;top:18px;z-index:5000;background:#fff;border:1px solid #bfe4d2;border-left:5px solid #12a866;border-radius:12px;box-shadow:0 14px 35px rgba(0,0,0,.16);padding:14px 16px;max-width:360px}.toast strong{display:block;color:#073a68;margin-bottom:4px}.pending{background:#fff4d6;color:#8a6500}.right{text-align:right}.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px}.modal .card{width:min(520px,100%)}@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.top{padding:14px 16px}}@media(max-width:520px){.grid{grid-template-columns:1fr}.wrap{margin-top:14px}.top{align-items:flex-start;flex-direction:column}}
+:root{--navy:#071a35;--navy2:#0d3762;--blue:#19a7ff;--cyan:#52e0ff;--bg:#eef4fb;--card:#fff;--line:#d8e4f0;--text:#12233b;--muted:#66788e;--green:#12a66b;--red:#df3d4f;--amber:#d88a00;--shadow:0 18px 55px rgba(7,26,53,.12)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#dff5ff 0,#eef4fb 35%,#f7faff 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}.hidden{display:none!important}
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#06162f,#0b3158 55%,#0b5477);color:#fff;padding:17px 22px;display:flex;align-items:center;gap:16px;box-shadow:0 10px 35px rgba(7,26,53,.2)}.brand{font-weight:900;letter-spacing:.5px;font-size:18px}.brand small{display:block;font-size:10px;letter-spacing:1.4px;opacity:.72;margin-top:3px}.live{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800}.live i{width:8px;height:8px;border-radius:50%;background:#37e68c;box-shadow:0 0 0 5px rgba(55,230,140,.12)}
+.wrap{max-width:1280px;margin:25px auto;padding:0 16px}.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;margin-bottom:18px;backdrop-filter:blur(10px)}.login{max-width:460px;margin:80px auto}.hero{display:flex;align-items:flex-start;gap:14px}.logo{width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;color:#03162d;font-weight:1000;font-size:18px;box-shadow:0 10px 30px rgba(25,167,255,.3)}.h1{font-size:24px;font-weight:900;margin:0 0 6px;color:var(--navy)}.h2{font-size:18px;font-weight:900;margin:0 0 8px;color:var(--navy)}.muted{color:var(--muted);font-size:13px;line-height:1.55}.field{flex:1;min-width:210px}.field label{display:block;font-size:12px;font-weight:800;margin:0 0 6px}.field input{width:100%;padding:12px 13px;border:1px solid #cbd9e7;border-radius:11px;background:#fff;color:var(--text);outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(25,167,255,.1)}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.btn{border:0;border-radius:11px;padding:11px 15px;font-weight:850;cursor:pointer;transition:.15s}.btn:hover{transform:translateY(-1px)}.primary{background:linear-gradient(135deg,#087bd1,#19a7ff);color:#fff;box-shadow:0 8px 22px rgba(25,167,255,.22)}.light{background:#edf5fc;color:var(--navy)}.danger{background:#fff0f2;color:#b52537}.success{background:#e8faf2;color:#087a50}.notice{padding:11px 13px;border-radius:11px;background:#edf7ff;color:#0b4770;font-size:13px;margin-top:12px}.notice.error{background:#fff0f2;color:#a42031}.notice.ok{background:#eafaf3;color:#087a50}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}.stat{padding:18px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,#fff,#f5faff)}.stat .label{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.6px}.stat b{display:block;font-size:30px;margin-top:6px;color:var(--navy)}
+.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:940px}.table th,.table td{padding:13px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:middle}.table th{background:#f5f9fd;color:#0b3158;font-size:11px;text-transform:uppercase;letter-spacing:.5px}.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900}.active{background:#ddf8ec;color:#08794f}.expired{background:#ffe7eb;color:#b42337}.soon{background:#fff2d7;color:#9a6200}.inactive{background:#edf2f7;color:#5e6f81}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:24px;letter-spacing:2px;text-align:center;padding:18px;border:1px dashed #4d84ae;border-radius:14px;background:#f4faff;color:#07264a}.modal{position:fixed;inset:0;background:rgba(2,15,31,.62);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px}.modal .card{width:min(540px,100%);margin:0}.search{max-width:340px}.reminder{border:1px solid #f1d28a;background:linear-gradient(135deg,#fff8e8,#fff);padding:14px;border-radius:14px;display:flex;gap:10px;align-items:flex-start}.copy{font-size:11px;color:#52708a;word-break:break-all}.footer-note{font-size:11px;color:#718398;margin-top:14px}.pill{padding:5px 9px;border-radius:999px;background:#eaf5ff;color:#0b5d91;font-size:10px;font-weight:900}
+@media(max-width:950px){.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.stats{grid-template-columns:1fr}.top{flex-wrap:wrap}.live{margin-left:0}.wrap{margin-top:14px}.login{margin:35px auto}.row .btn{width:100%}}
 </style>
 </head>
 <body>
-<div id="loginView" class="wrap">
+<section id="loginView" class="wrap">
   <div class="card login">
-    <div class="h1">Master Control Center</div>
-    <div class="muted">NOVA WEB DEVELOPER — تمام licensed websites کا مرکزی کنٹرول</div>
-    <div style="height:18px"></div>
-    <div class="field"><label>Master Email</label><input id="email" type="email" autocomplete="username" value="annonymmous3@gmail.com"></div>
-    <div style="height:10px"></div>
-    <div class="field"><label>Master Password</label><input id="password" type="password" autocomplete="current-password" placeholder="اپنا Master Password درج کریں"></div>
+    <div class="hero"><div class="logo">NW</div><div><div class="h1">NOVA WEB DEVELOPER</div><div class="muted">Master License & Website Control Center</div></div></div>
+    <div style="height:20px"></div>
+    <div class="field"><label>Master Email</label><input id="email" type="email" value="annonymmous3@gmail.com" autocomplete="username"></div>
+    <div style="height:11px"></div>
+    <div class="field"><label>Master Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Enter your password"></div>
     <div style="height:14px"></div>
-    <button class="btn btn-primary" style="width:100%" onclick="login()">Master Login</button>
-    <button class="btn" style="width:100%;margin-top:9px;background:#eef5ff;color:var(--navy)" onclick="openRecovery()">Master Key سے Password Reset</button>
+    <button class="btn primary" style="width:100%" onclick="login()">Secure Master Login</button>
+    <button class="btn light" style="width:100%;margin-top:9px" onclick="openRecovery()">Reset Password with Master Key</button>
     <div id="loginMsg" class="notice hidden"></div>
-    <div class="muted" style="margin-top:12px">پہلی بار: Password <b>123456</b> استعمال کریں۔ کامیاب login کے بعد آپ سے اپنا نیا password بنانے کو کہا جائے گا۔</div>
+    <div class="footer-note">First-time password: <b>123456</b>. After the first successful login, you must create a strong permanent password.</div>
   </div>
-</div>
+</section>
 
-<div id="setupModal" class="modal hidden">
-  <div class="card">
-    <div class="h1" style="font-size:19px">اپنا نیا Master Password بنائیں</div>
-    <div class="muted">یہ صرف پہلی کامیاب login کے بعد ایک بار کرنا ہوگا۔ اس کے بعد ہمیشہ آپ کا اپنا password استعمال ہوگا۔</div>
-    <div style="height:14px"></div>
-    <div class="field"><label>نیا Password</label><input id="newPassword" type="password" autocomplete="new-password" placeholder="کم از کم 8 حروف"></div>
-    <div style="height:10px"></div>
-    <div class="field"><label>Password دوبارہ لکھیں</label><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="Confirm Password"></div>
-    <div id="setupMsg" class="notice hidden"></div>
-    <div class="right" style="margin-top:14px"><button class="btn btn-primary" onclick="saveNewMasterPassword()">Password Save کریں</button></div>
-  </div>
-</div>
+<section id="setupModal" class="modal hidden">
+ <div class="card">
+  <div class="h2">Create Your Permanent Master Password</div><div class="muted">Use at least 10 characters with uppercase, lowercase, a number, and a symbol.</div><div style="height:14px"></div>
+  <div class="field"><label>New Password</label><input id="newPassword" type="password" autocomplete="new-password"></div><div style="height:10px"></div>
+  <div class="field"><label>Confirm Password</label><input id="confirmPassword" type="password" autocomplete="new-password"></div><div id="setupMsg" class="notice hidden"></div>
+  <div style="text-align:right;margin-top:14px"><button class="btn primary" onclick="saveNewMasterPassword()">Save Permanent Password</button></div>
+ </div>
+</section>
 
-<div id="recoveryModal" class="modal hidden">
-  <div class="card">
-    <div class="h1" style="font-size:19px">Master Password Reset</div>
-    <div class="muted">اپنی Master Key درج کریں، پھر نیا password دو بار لکھیں۔</div>
-    <div style="height:14px"></div>
-    <div class="field"><label>Master Key</label><input id="masterKey" type="password" autocomplete="off" placeholder="Master Key"></div>
-    <div style="height:10px"></div>
-    <div class="field"><label>نیا Password</label><input id="resetPassword" type="password" autocomplete="new-password" placeholder="کم از کم 8 حروف"></div>
-    <div style="height:10px"></div>
-    <div class="field"><label>Password دوبارہ لکھیں</label><input id="resetConfirmPassword" type="password" autocomplete="new-password" placeholder="Confirm Password"></div>
-    <div id="recoveryMsg" class="notice hidden"></div>
-    <div class="right" style="margin-top:14px"><button class="btn" onclick="closeRecovery()">Cancel</button> <button class="btn btn-primary" onclick="resetMasterPassword()">Password Reset کریں</button></div>
-  </div>
-</div>
+<section id="recoveryModal" class="modal hidden">
+ <div class="card">
+  <div class="h2">Master Password Recovery</div><div class="muted">Enter your private Master Key and choose a new strong password.</div><div style="height:14px"></div>
+  <div class="field"><label>Master Key</label><input id="masterKey" type="password" autocomplete="off"></div><div style="height:10px"></div>
+  <div class="field"><label>New Password</label><input id="resetPassword" type="password" autocomplete="new-password"></div><div style="height:10px"></div>
+  <div class="field"><label>Confirm Password</label><input id="resetConfirmPassword" type="password" autocomplete="new-password"></div><div id="recoveryMsg" class="notice hidden"></div>
+  <div style="text-align:right;margin-top:14px"><button class="btn light" onclick="closeRecovery()">Cancel</button> <button class="btn primary" onclick="resetMasterPassword()">Reset Password</button></div>
+ </div>
+</section>
+
+<section id="codeModal" class="modal hidden">
+ <div class="card">
+  <div class="h2">Monthly Activation Code</div><div class="muted" id="codeInfo"></div><div style="height:12px"></div><div id="generatedCode" class="code"></div>
+  <div class="notice ok">Give this code to the customer only after the monthly payment is received. The code is single-use.</div>
+  <div style="text-align:right;margin-top:14px"><button class="btn primary" onclick="copyCode()">Copy Code</button> <button class="btn light" onclick="closeCodeModal()">Close</button></div>
+ </div>
+</section>
+
 <div id="app" class="hidden">
-  <div class="top"><div class="brand">NOVA WEB DEVELOPER <small>MASTER LICENSE CONTROL CENTER</small></div><div class="live-master"><span></span> LIVE LICENSE MONITOR</div><button class="btn btn-light" onclick="logout()">Logout</button></div>
-  <div class="wrap">
-    <div class="grid">
-      <div class="stat"><span class="muted">Registered Websites</span><b id="statSites">0</b></div>
-      <div class="stat"><span class="muted">Active</span><b id="statActive">0</b></div>
-      <div class="stat"><span class="muted">Expiring Soon</span><b id="statSoon">0</b></div>
-      <div class="stat"><span class="muted">Expired</span><b id="statExpired">0</b></div><div class="stat"><span class="muted">Renewal Pending</span><b id="statPending">0</b></div>
-    </div>
-    <div class="card">
-      <div class="h1" style="font-size:19px">نئی ویب سائٹ رجسٹر کریں</div>
-      <div class="muted" style="margin-bottom:14px">صرف URL درج کریں، پھر اسی ویب سائٹ کے لیے ماہانہ activation code بنائیں۔</div>
-      <div class="toolbar">
-        <div class="field"><label>Website URL</label><input id="siteUrl" placeholder="https://example.vercel.app/" /></div>
-        <div class="field"><label>Website / Cafe Name</label><input id="siteName" placeholder="Cafe / Restaurant Name" /></div>
-        <button class="btn btn-primary" onclick="registerSite()">Register Website</button>
-      </div>
-      <div id="siteMsg" class="notice hidden"></div>
-    </div>
-    <div class="card">
-      <div class="h1" style="font-size:19px">Licensed Websites</div>
-      <div class="tablewrap"><table class="table"><thead><tr><th>Website</th><th>Name</th><th>Status</th><th>Expiry</th><th>Days</th><th>Renewal</th><th>Action</th></tr></thead><tbody id="sitesBody"></tbody></table></div>
-    </div>
-  </div>
+<header class="top"><div><div class="brand">NOVA WEB DEVELOPER</div><div class="brand"><small>FUTURISTIC MASTER LICENSE CONTROL</small></div></div><div class="live"><i></i> LIVE LICENSE MONITOR</div><button class="btn light" onclick="logout()">Logout</button></header>
+<main class="wrap">
+ <div id="reminderBox"></div>
+ <div style="height:14px"></div>
+ <section class="stats">
+  <div class="stat"><div class="label">Registered Websites</div><b id="statSites">0</b></div><div class="stat"><div class="label">Active</div><b id="statActive">0</b></div><div class="stat"><div class="label">Renewal Soon</div><b id="statSoon">0</b></div><div class="stat"><div class="label">Expired</div><b id="statExpired">0</b></div><div class="stat"><div class="label">Renewal Pending</div><b id="statPending">0</b></div>
+ </section>
+ <div style="height:18px"></div>
+ <section class="card">
+  <div class="h2">Register a Website</div><div class="muted" style="margin-bottom:14px">Register any customer website by URL. The same master system can control as many websites as you need.</div>
+  <div class="row"><div class="field"><label>Website URL</label><input id="siteUrl" placeholder="https://example.vercel.app"></div><div class="field"><label>Website / Business Name</label><input id="siteName" placeholder="Customer Website Name"></div><button class="btn primary" onclick="registerSite()">Register Website</button></div>
+  <div id="siteMsg" class="notice hidden"></div>
+ </section>
+ <section class="card">
+  <div class="row" style="align-items:center"><div style="flex:1"><div class="h2" style="margin:0">Licensed Websites</div><div class="muted">Generate a monthly code, monitor expiry, and see renewal status.</div></div><div class="field search"><label>Search</label><input id="searchBox" placeholder="Search name or URL" oninput="renderSites()"></div></div>
+  <div style="height:12px"></div><div class="tablewrap"><table class="table"><thead><tr><th>Website</th><th>Name</th><th>Status</th><th>Expiry</th><th>Days Left</th><th>Renewal</th><th>Action</th></tr></thead><tbody id="sitesBody"></tbody></table></div>
+ </section>
+ <section class="card"><div class="h2">How Monthly Licensing Works</div><div class="muted">Register the website once → collect the monthly payment → generate a single-use activation code → customer enters it in the website Subscription screen → the website becomes active until the end of the next calendar month. Five days before expiry, the customer website and this master dashboard show a renewal warning. After expiry, the website blocks normal use until a new code is activated.</div></section>
+</main>
 </div>
-<div id="masterToast" class="toast hidden"><strong id="toastTitle">License Update</strong><div id="toastText"></div></div>
-<div id="codeModal" class="modal hidden"><div class="card"><div class="h1" style="font-size:19px">Activation Code تیار ہے</div><div class="muted">یہ code صرف منتخب ویب سائٹ کے لیے ہے اور ایک بار استعمال ہوگا۔</div><div id="generatedCode" class="codebox"></div><div id="generatedInfo" class="notice"></div><div class="right" style="margin-top:14px"><button class="btn btn-primary" onclick="copyCode()">Code Copy کریں</button> <button class="btn" onclick="closeModal()">Close</button></div></div></div>
 <script>
 const SUPABASE_URL='https://ixmiwgolmklrqenwflub.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_30FTYbUsJSxENE6zXFXatw_ySKKcWzB';
 const MASTER_EMAIL='annonymmous3@gmail.com';
-const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); let lastCode='';
-
-function msg(id,t){
-  const e=document.getElementById(id);
-  if(!e)return;
-  e.textContent=t;
-  e.classList.remove('hidden');
-}
-
-function validPassword(p){ return typeof p==='string' && p.length>=8; }
-
-async function login(){
-  const email=(document.getElementById('email').value.trim()||MASTER_EMAIL).toLowerCase();
-  const password=document.getElementById('password').value;
-  if(email!==MASTER_EMAIL)return msg('loginMsg','صرف NOVA WEB DEVELOPER کا Master Email استعمال کریں۔');
-  if(!password)return msg('loginMsg','Master Password درج کریں۔');
-  const {error}=await db.auth.signInWithPassword({email,password});
-  if(error)return msg('loginMsg',error.message);
-  await boot();
-}
-
-async function boot(){
-  const {data:{session}}=await db.auth.getSession();
-  if(!session){
-    document.getElementById('loginView').classList.remove('hidden');
-    document.getElementById('app').classList.add('hidden');
-    return;
-  }
-
-  const {data:ok,error:adminError}=await db.rpc('is_master_admin');
-  if(adminError || ok!==true){
-    await db.auth.signOut();
-    return msg('loginMsg','یہ email Master Admin میں رجسٹرڈ نہیں ہے۔');
-  }
-
-  const user=session.user;
-  const initialized=user?.user_metadata?.master_password_initialized===true;
-
-  if(!initialized){
-    document.getElementById('loginView').classList.add('hidden');
-    document.getElementById('app').classList.add('hidden');
-    document.getElementById('setupModal').classList.remove('hidden');
-    return;
-  }
-
-  document.getElementById('loginView').classList.add('hidden');
-  document.getElementById('setupModal').classList.add('hidden');
-  document.getElementById('app').classList.remove('hidden');
-  loadSites();
-}
-
-async function saveNewMasterPassword(){
-  const p=document.getElementById('newPassword').value;
-  const c=document.getElementById('confirmPassword').value;
-  if(!validPassword(p))return msg('setupMsg','نیا password کم از کم 8 حروف کا ہونا چاہیے۔');
-  if(p!==c)return msg('setupMsg','دونوں passwords ایک جیسے نہیں ہیں۔');
-
-  const {data,error}=await db.auth.updateUser({
-    password:p,
-    data:{master_password_initialized:true}
-  });
-  if(error)return msg('setupMsg',error.message);
-
-  document.getElementById('setupModal').classList.add('hidden');
-  document.getElementById('newPassword').value='';
-  document.getElementById('confirmPassword').value='';
-  document.getElementById('app').classList.remove('hidden');
-  loadSites();
-  alert('✅ نیا Master Password محفوظ ہو گیا۔ اب login کے لیے یہی password استعمال ہوگا۔');
-}
-
-function openRecovery(){
-  document.getElementById('recoveryModal').classList.remove('hidden');
-  document.getElementById('recoveryMsg').classList.add('hidden');
-  document.getElementById('masterKey').value='';
-  document.getElementById('resetPassword').value='';
-  document.getElementById('resetConfirmPassword').value='';
-}
-
-function closeRecovery(){
-  document.getElementById('recoveryModal').classList.add('hidden');
-}
-
-async function resetMasterPassword(){
-  const key=document.getElementById('masterKey').value.trim();
-  const p=document.getElementById('resetPassword').value;
-  const c=document.getElementById('resetConfirmPassword').value;
-  if(!key)return msg('recoveryMsg','Master Key درج کریں۔');
-  if(!validPassword(p))return msg('recoveryMsg','نیا password کم از کم 8 حروف کا ہونا چاہیے۔');
-  if(p!==c)return msg('recoveryMsg','دونوں passwords ایک جیسے نہیں ہیں۔');
-
-  const {data,error}=await db.rpc('reset_master_password_with_key',{
-    p_email:MASTER_EMAIL,
-    p_master_key:key,
-    p_new_password:p
-  });
-  if(error)return msg('recoveryMsg',error.message);
-  const row=Array.isArray(data)?data[0]:data;
-  if(!row?.success)return msg('recoveryMsg',row?.message||'Master Key درست نہیں ہے۔');
-
-  closeRecovery();
-  document.getElementById('password').value='';
-  alert('✅ Password reset ہو گیا۔ اب login میں اپنا نیا password استعمال کریں۔');
-}
-
-async function logout(){await db.auth.signOut();location.reload()}
-function cleanUrl(v){return v.trim().replace(/\/$/,'')}
-async function registerSite(){const url=cleanUrl(document.getElementById('siteUrl').value),name=document.getElementById('siteName').value.trim();if(!/^https?:\/\//i.test(url))return msg('siteMsg','درست URL درج کریں، مثلاً https://example.vercel.app');const {error}=await db.rpc('register_site',{p_site_url:url,p_site_name:name});if(error)return msg('siteMsg',error.message);msg('siteMsg','ویب سائٹ کامیابی سے رجسٹر ہو گئی۔');loadSites()}
-function statusBadge(s){return s==='ACTIVE'?'<span class="badge active">ACTIVE</span>':s==='EXPIRED'?'<span class="badge expired">EXPIRED</span>':'<span class="badge inactive">INACTIVE</span>'}
-async function loadSites(){const {data,error}=await db.from('site_licenses').select('*').order('created_at',{ascending:false});if(error)return msg('siteMsg',error.message);const {data:codes}=await db.from('activation_codes').select('site_url,status,created_at').eq('status','UNUSED');const pendingCodes=new Set((codes||[]).map(c=>cleanUrl(c.site_url).toLowerCase()));let active=0,soon=0,expired=0,pending=0;const now=new Date();data.forEach(x=>{const d=x.active_until?Math.ceil((new Date(x.active_until+'T23:59:59')-now)/86400000):0;if(d>=0)active++;if(d>=0&&d<=5)soon++;if(d<0)expired++;if((d<0||d<=5)&&pendingCodes.has(cleanUrl(x.site_url).toLowerCase()))pending++});document.getElementById('statSites').textContent=data.length;document.getElementById('statActive').textContent=active;document.getElementById('statSoon').textContent=soon;document.getElementById('statExpired').textContent=expired;document.getElementById('statPending').textContent=pending;document.getElementById('sitesBody').innerHTML=data.map(x=>{const d=x.active_until?Math.max(0,Math.ceil((new Date(x.active_until+'T23:59:59')-now)/86400000)):0;const s=x.active_until&&new Date(x.active_until+'T23:59:59')>=now?'ACTIVE':x.active_until?'EXPIRED':'INACTIVE';const pendingCode=pendingCodes.has(cleanUrl(x.site_url).toLowerCase());const renewal=(s==='EXPIRED'||d<=5)?(pendingCode?'<span class="badge pending">CODE GENERATED</span>':'<span class="badge expired">AWAITING RENEWAL</span>'):'<span class="badge active">OK</span>';return `<tr><td>${escapeHtml(x.site_url)}</td><td>${escapeHtml(x.site_name)}</td><td>${statusBadge(s)}</td><td>${x.active_until||'—'}</td><td>${s==='EXPIRED'?0:d}</td><td>${renewal}</td><td><button class="btn btn-primary" onclick="generateCode('${encodeURIComponent(x.site_url)}')">Generate Monthly Code</button></td></tr>`}).join('')||'<tr><td colspan="7">ابھی کوئی ویب سائٹ رجسٹرڈ نہیں۔</td></tr>'}
-function escapeHtml(s){return String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let sites=[];let lastCode='';let liveChannel=null;
+const $=id=>document.getElementById(id);
+function show(id,msg,type=''){const e=$(id);if(!e)return;e.textContent=msg;e.className='notice'+(type?' '+type:'');e.classList.remove('hidden')}
+function normalizeUrl(v){return String(v||'').trim().replace(/\/+$/,'')}
+function strong(p){return typeof p==='string'&&p.length>=10&&/[A-Z]/.test(p)&&/[a-z]/.test(p)&&/[0-9]/.test(p)&&/[^A-Za-z0-9]/.test(p)}
+async function login(){const email=($('email').value.trim()||MASTER_EMAIL).toLowerCase();const password=$('password').value;if(email!==MASTER_EMAIL)return show('loginMsg','Use the authorized Master Email only.','error');if(!password)return show('loginMsg','Enter your Master Password.','error');const {error}=await db.auth.signInWithPassword({email,password});if(error)return show('loginMsg',error.message,'error');await boot()}
+async function boot(){const {data:{session}}=await db.auth.getSession();if(!session){$('loginView').classList.remove('hidden');$('app').classList.add('hidden');return}const {data:ok,error}=await db.rpc('is_master_admin');if(error||ok!==true){await db.auth.signOut();return show('loginMsg','This account is not authorized as a Master Administrator.','error')}const initialized=session.user?.user_metadata?.master_password_initialized===true;if(!initialized){$('loginView').classList.add('hidden');$('setupModal').classList.remove('hidden');return}$('loginView').classList.add('hidden');$('setupModal').classList.add('hidden');$('app').classList.remove('hidden');await loadSites();subscribeLive()}
+async function saveNewMasterPassword(){const p=$('newPassword').value,c=$('confirmPassword').value;if(!strong(p))return show('setupMsg','Password is not strong enough. Use 10+ characters with uppercase, lowercase, number, and symbol.','error');if(p!==c)return show('setupMsg','Passwords do not match.','error');const {error}=await db.auth.updateUser({password:p,data:{master_password_initialized:true}});if(error)return show('setupMsg',error.message,'error');$('setupModal').classList.add('hidden');$('newPassword').value='';$('confirmPassword').value='';$('app').classList.remove('hidden');await loadSites();subscribeLive();alert('Permanent Master Password saved successfully.')}
+function openRecovery(){$('recoveryModal').classList.remove('hidden');$('recoveryMsg').classList.add('hidden')}
+function closeRecovery(){$('recoveryModal').classList.add('hidden')}
+async function resetMasterPassword(){const key=$('masterKey').value.trim(),p=$('resetPassword').value,c=$('resetConfirmPassword').value;if(!key)return show('recoveryMsg','Enter your Master Key.','error');if(!strong(p))return show('recoveryMsg','Password is not strong enough.','error');if(p!==c)return show('recoveryMsg','Passwords do not match.','error');const {data,error}=await db.rpc('reset_master_password_with_key',{p_email:MASTER_EMAIL,p_master_key:key,p_new_password:p});if(error)return show('recoveryMsg',error.message,'error');const row=Array.isArray(data)?data[0]:data;if(!row?.success)return show('recoveryMsg',row?.message||'Invalid Master Key.','error');closeRecovery();$('password').value='';alert('Password reset successfully. Login with the new password.')}
+async function logout(){if(liveChannel)try{await db.removeChannel(liveChannel)}catch(e){}await db.auth.signOut();location.reload()}
+async function registerSite(){const url=normalizeUrl($('siteUrl').value),name=$('siteName').value.trim()||'Licensed Website';if(!/^https?:\/\//i.test(url))return show('siteMsg','Enter a valid http/https URL.','error');const {error}=await db.rpc('register_site',{p_site_url:url,p_site_name:name});if(error)return show('siteMsg',error.message,'error');$('siteUrl').value='';$('siteName').value='';show('siteMsg','Website registered successfully.','ok');await loadSites()}
 function randomCode(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let out='NOVA-';for(let i=0;i<12;i++){if(i===4||i===8)out+='-';out+=a[Math.floor(Math.random()*a.length)]}return out}
-async function sha256(text){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')}
-async function generateCode(encoded){const url=decodeURIComponent(encoded),code=randomCode(),hash=await sha256(code.toUpperCase());const {error}=await db.rpc('store_activation_code',{p_site_url:url,p_code_hash:hash,p_code_last4:code.slice(-4)});if(error)return alert(error.message);lastCode=code;document.getElementById('generatedCode').textContent=code;document.getElementById('generatedInfo').textContent='یہ code اس URL کے لیے ہے: '+url+' — activation کے بعد اگلے calendar month کے آخری دن تک فعال رہے گا۔';document.getElementById('codeModal').classList.remove('hidden')}
-function copyCode(){navigator.clipboard?.writeText(lastCode);alert('Activation code copy ہو گیا۔')}
-function closeModal(){document.getElementById('codeModal').classList.add('hidden')}
-function showToast(title,text){const t=document.getElementById('masterToast');document.getElementById('toastTitle').textContent=title;document.getElementById('toastText').textContent=text;t.classList.remove('hidden');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>t.classList.add('hidden'),10000)}
-function subscribeMasterRealtime(){try{db.channel('nova-license-live').on('postgres_changes',{event:'*',schema:'public',table:'site_licenses'},payload=>{loadSites();if(payload.eventType==='UPDATE' && payload.new && payload.new.active_until){showToast('Website Activated / Renewed',`${payload.new.site_name || payload.new.site_url} is now active until ${payload.new.active_until}.`);}}).subscribe();}catch(e){}}
-setInterval(()=>{if(document.getElementById('app') && !document.getElementById('app').classList.contains('hidden')) loadSites()},5000);
-async function bootAndLive(){await boot();if(!document.getElementById('app').classList.contains('hidden'))subscribeMasterRealtime()}
-bootAndLive();
+async function sha256(text){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function generateCode(encoded){const url=decodeURIComponent(encoded);const code=randomCode();const hash=await sha256(code.toUpperCase());const {error}=await db.rpc('store_activation_code',{p_site_url:url,p_code_hash:hash,p_code_last4:code.slice(-4)});if(error)return alert(error.message);lastCode=code;$('generatedCode').textContent=code;$('codeInfo').textContent='Website: '+url+' • Single-use monthly activation code';$('codeModal').classList.remove('hidden');await loadSites()}
+async function copyCode(){try{await navigator.clipboard.writeText(lastCode);alert('Activation code copied.')}catch(e){alert('Copy failed. Please copy the code manually.')}}
+function closeCodeModal(){$('codeModal').classList.add('hidden')}
+function badge(s,d){if(s==='ACTIVE'&&d<=5)return '<span class="badge soon">● RENEWAL SOON</span>';if(s==='ACTIVE')return '<span class="badge active">● ACTIVE</span>';if(s==='EXPIRED')return '<span class="badge expired">● EXPIRED</span>';return '<span class="badge inactive">● INACTIVE</span>'}
+function renderSites(){const q=$('searchBox').value.trim().toLowerCase();const list=sites.filter(x=>!q||x.site_url.toLowerCase().includes(q)||x.site_name.toLowerCase().includes(q));$('sitesBody').innerHTML=list.map(x=>{const renewal=x.status==='EXPIRED'?'<span class="badge expired">RENEW NOW</span>':x.days_left<=5?'<span class="badge soon">PAYMENT / CODE DUE</span>':'<span class="badge active">OK</span>';return `<tr><td><b>${escapeHtml(x.site_url)}</b></td><td>${escapeHtml(x.site_name)}</td><td>${badge(x.status,x.days_left)}</td><td>${x.active_until||'—'}</td><td><b>${x.days_left}</b></td><td>${renewal}</td><td><button class="btn primary" onclick="generateCode('${encodeURIComponent(x.site_url)}')">Generate Code</button></td></tr>`}).join('')||'<tr><td colspan="7">No websites found.</td></tr>'}
+function escapeHtml(s){return String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+async function loadSites(){const {data,error}=await db.from('site_licenses').select('*').order('created_at',{ascending:false});if(error)return show('siteMsg',error.message,'error');const now=Date.now();sites=(data||[]).map(x=>{const until=x.active_until?new Date(x.active_until+'T23:59:59').getTime():0;const days=until?Math.ceil((until-now)/86400000):0;return {...x,status:until&&until>=now?'ACTIVE':until?'EXPIRED':'INACTIVE',days_left:Math.max(0,days)}});let active=0,soon=0,expired=0;sites.forEach(x=>{if(x.status==='ACTIVE')active++;if(x.status==='ACTIVE'&&x.days_left<=5)soon++;if(x.status==='EXPIRED')expired++});const {data:codes}=await db.from('activation_codes').select('site_url,status').eq('status','UNUSED');const pendingSet=new Set((codes||[]).map(c=>normalizeUrl(c.site_url).toLowerCase()));const pending=sites.filter(x=>(x.status==='EXPIRED'||x.days_left<=5)&&pendingSet.has(normalizeUrl(x.site_url).toLowerCase())).length;$('statSites').textContent=sites.length;$('statActive').textContent=active;$('statSoon').textContent=soon;$('statExpired').textContent=expired;$('statPending').textContent=pending;const urgent=sites.filter(x=>x.status==='EXPIRED'||(x.status==='ACTIVE'&&x.days_left<=5));$('reminderBox').innerHTML=urgent.length?`<div class="reminder">🔔 <div><b>${urgent.length} website(s) need renewal attention.</b><div class="muted">The 5-day warning and expired status are shown automatically.</div></div></div>`:'';renderSites()}
+function subscribeLive(){if(liveChannel)return;try{liveChannel=db.channel('nova-master-license-live').on('postgres_changes',{event:'*',schema:'public',table:'site_licenses'},()=>loadSites()).subscribe()}catch(e){}}
+setInterval(()=>{if(!$('app').classList.contains('hidden'))loadSites()},10000);
+boot();
 </script>
-</body></html>
+</body>
+</html>
